@@ -50,10 +50,10 @@ const validateInput = (input) => {
     
     if (input.length === 0) {
         // Is the input empty
-        message.innerText = "Please enter a letter";
+        message.innerText = "Please enter a letter.";
     } else if (input.length > 1) {
         // Did you entered more than one letter
-        message.innerText = "Please enter a single letter";
+        message.innerText = "Please enter a single letter.";
     } else if (!input.match(acceptedLetter)) {
         // Did you type a number, a special character or some other non letter thing?
         message.innerText = "Please enter a letter from A to Z.";
@@ -72,14 +72,49 @@ const makeGuess = (guess) => {
         message.innerText = "You already guessed that letter, silly. Try again.";
     } else {
         guessedLetters.push(guess);
-        console.log(guessedLetters);
+        showGuessedLetters();
+        updateWordInProgress(guessedLetters);
     }
 }
 
 // players guessed letter
-
+const showGuessedLetters = () => {
     // clear the first list
+    guessedLettersElement.innerHTML = "";
 
+    for (const letter of guessedLetters) {
+        const li = document.createElement("li");
+        li.innerText = letter;
+        guessedLettersElement.append(li);
+    }
+
+}
+    
 // update the word
+const updateWordInProgress = (guessedLetters) => {
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+
+    const revealWord = [];
+
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            revealWord.push(letter.toUpperCase());
+        } else {
+            revealWord.push("●");
+        }
+    }
+    // console.log(revealWord);
+    wordInProgress.innerText = revealWord.join("");
+    checkIfwin();
+}
+
+// check if the player Won
+const checkIfwin = () => {
+    if (word.toUpperCase() === wordInProgress.innerText) {
+        message.classList.add("win");
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+    }
+}
 
 // check the remaining guesses
