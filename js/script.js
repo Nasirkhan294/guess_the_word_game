@@ -21,7 +21,6 @@ const getData = async () => {
     const wordArray = words.split("\n");
     const randomIndex = Math.floor(Math.random() * wordArray.length);
     word = wordArray[randomIndex].trim();
-    console.log(word);
     placeholder(word);
 }
 
